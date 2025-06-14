@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonIcon } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { storefront, pricetag, cart } from 'ionicons/icons';
 
 @Component({
   selector: 'app-tab1',
@@ -10,5 +12,13 @@ import { RouterLink } from '@angular/router';
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton, IonIcon, RouterLink],
 })
 export class Tab1Page {
-  constructor() {}
+  constructor(private router: Router) {
+    addIcons({ storefront, pricetag, cart });
+  }
+
+  navigateToCategory(category: string) {
+    this.router.navigate(['/tabs/products'], { 
+      queryParams: { category: category } 
+    });
+  }
 }

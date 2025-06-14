@@ -1,28 +1,63 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Home
+      ShopKaro - Ghar Baithe Shopping
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="home-container">
-    <ion-card>
-      <img src="assets/shapes.svg" alt="App Banner" />
+    <!-- Welcome Banner -->
+    <ion-card class="welcome-banner">
+      <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=300&fit=crop" alt="Shopping Banner" />
       <ion-card-header>
-        <ion-card-title>Welcome to Photo Navi</ion-card-title>
-        <ion-card-subtitle>Your navigation companion</ion-card-subtitle>
+        <ion-card-title>ShopKaro mein Aapka Swagat Hai!</ion-card-title>
+        <ion-card-subtitle>Sabse acche deals aur products yahan milenge</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <ion-button expand="block" size="large" routerLink="/tabs/products">
+        <ion-icon slot="start" name="storefront"></ion-icon>
+        Products Dekho
+      </ion-button>
+      <ion-button expand="block" size="large" fill="outline" routerLink="/tabs/offers">
+        <ion-icon slot="start" name="pricetag"></ion-icon>
+        Offers & Deals
+      </ion-button>
+      <ion-button expand="block" size="large" fill="outline" routerLink="/tabs/cart">
+        <ion-icon slot="start" name="cart"></ion-icon>
+        Mera Cart
+      </ion-button>
+    </div>
+
+    <!-- Categories -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Categories</ion-card-title>
+        <ion-card-subtitle>Apni pasand ka category choose karein</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
-        <ion-button expand="block" routerLink="/tabs/tab2">
-          <ion-icon slot="start" name="map"></ion-icon>
-          Open Map
-        </ion-button>
-        <ion-button expand="block" fill="outline" routerLink="/tabs/offers">
-          <ion-icon slot="start" name="pricetag"></ion-icon>
-          View Offers
-        </ion-button>
+        <div class="category-grid">
+          <div class="category-item" (click)="navigateToCategory('Mobiles')">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=100&h=100&fit=crop" alt="Mobiles" />
+            <span>Mobiles</span>
+          </div>
+          <div class="category-item" (click)="navigateToCategory('Men\'s Fashion')">
+            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=100&h=100&fit=crop" alt="Men's Fashion" />
+            <span>Men's Fashion</span>
+          </div>
+          <div class="category-item" (click)="navigateToCategory('Women\'s Fashion')">
+            <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=100&h=100&fit=crop" alt="Women's Fashion" />
+            <span>Women's Fashion</span>
+          </div>
+          <div class="category-item" (click)="navigateToCategory('Electronics')">
+            <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=100&h=100&fit=crop" alt="Electronics" />
+            <span>Electronics</span>
+          </div>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>

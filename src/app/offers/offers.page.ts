@@ -4,16 +4,20 @@ import { addIcons } from 'ionicons';
 import { locationOutline, timeOutline, pricetagOutline } from 'ionicons/icons';
 import { LocationService } from '../services/location.service';
 import { CommonModule } from '@angular/common';
+import { InrCurrencyPipe } from '../pipes/inr-currency.pipe';
 
 interface Offer {
   id: string;
   title: string;
   description: string;
   discount: string;
+  originalPrice: number;
+  discountedPrice: number;
   validUntil: string;
   distance: number;
   category: string;
   imageUrl?: string;
+  storeName: string;
 }
 
 @Component({
@@ -33,10 +37,10 @@ interface Offer {
     IonCardContent,
     IonButton,
     IonIcon,
-
     IonList,
     IonRefresher,
-    IonRefresherContent
+    IonRefresherContent,
+    InrCurrencyPipe
   ]
 })
 export class OffersPage implements OnInit {
@@ -70,31 +74,68 @@ export class OffersPage implements OnInit {
     this.offers = [
       {
         id: '1',
-        title: 'Pizza Palace Special',
-        description: 'Get 30% off on all large pizzas',
-        discount: '30% OFF',
-        validUntil: '2024-12-31',
-        distance: 0.5,
+        title: 'Biryani Bonanza',
+        description: 'Hyderabadi biryani pe 40% off - finger licking good!',
+        discount: '40% OFF',
+        originalPrice: 499,
+        discountedPrice: 299,
+        validUntil: '31 Dec 2024',
+        distance: 0.3,
         category: 'Food',
-        imageUrl: 'assets/pizza.jpg'
+        storeName: 'Paradise Biryani',
+        imageUrl: 'https://images.unsplash.com/photo-1563379091339-03246963d96c?w=400&h=300&fit=crop'
       },
       {
         id: '2',
-        title: 'Coffee Corner Deal',
-        description: 'Buy 2 get 1 free on all beverages',
-        discount: 'Buy 2 Get 1',
-        validUntil: '2024-12-25',
-        distance: 0.8,
-        category: 'Beverages'
+        title: 'Chai Pe Charcha',
+        description: '2 cutting chai + samosa combo sirf ₹50 mein',
+        discount: 'COMBO DEAL',
+        originalPrice: 80,
+        discountedPrice: 50,
+        validUntil: '25 Dec 2024',
+        distance: 0.2,
+        category: 'Beverages',
+        storeName: 'Tapri Chai',
+        imageUrl: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=400&h=300&fit=crop'
       },
       {
         id: '3',
-        title: 'Fashion Store Sale',
-        description: 'Up to 50% off on winter collection',
+        title: 'Kurta Collection Sale',
+        description: 'Festive kurtas pe upto 60% off - ethnic wear ka mela!',
+        discount: '60% OFF',
+        originalPrice: 1999,
+        discountedPrice: 799,
+        validUntil: '20 Dec 2024',
+        distance: 0.8,
+        category: 'Fashion',
+        storeName: 'Manyavar',
+        imageUrl: 'https://images.unsplash.com/photo-1622470952794-aa9c70b0fb9d?w=400&h=300&fit=crop'
+      },
+      {
+        id: '4',
+        title: 'Mobile Accessories Mela',
+        description: 'Phone covers, earphones aur chargers pe heavy discount',
         discount: '50% OFF',
-        validUntil: '2024-12-20',
-        distance: 1.2,
-        category: 'Fashion'
+        originalPrice: 599,
+        discountedPrice: 299,
+        validUntil: '28 Dec 2024',
+        distance: 1.1,
+        category: 'Electronics',
+        storeName: 'Mobile Zone',
+        imageUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop'
+      },
+      {
+        id: '5',
+        title: 'Sweets Ka Tyohar',
+        description: 'Gulab jamun, rasgulla aur laddu - mithai box ₹199 mein',
+        discount: 'SPECIAL PRICE',
+        originalPrice: 350,
+        discountedPrice: 199,
+        validUntil: '30 Dec 2024',
+        distance: 0.6,
+        category: 'Sweets',
+        storeName: 'Haldiram\'s',
+        imageUrl: 'https://images.unsplash.com/photo-1606471191009-63d7c9c4b8e4?w=400&h=300&fit=crop'
       }
     ];
   }
@@ -107,8 +148,9 @@ export class OffersPage implements OnInit {
   }
 
   claimOffer(offer: Offer) {
-    console.log('Claiming offer:', offer);
+    console.log('Offer claim kar rahe hain:', offer);
     // Implement offer claiming logic
+    // Show success message: "Offer successfully claim ho gaya!"
   }
 
   getDistanceText(distance: number): string {

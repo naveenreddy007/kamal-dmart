@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Products</ion-title>
+    <ion-title>Shopping Karo</ion-title>
     <ion-button slot="end" fill="clear" routerLink="/tabs/cart">
       <ion-icon name="cart-outline"></ion-icon>
       <ion-badge *ngIf="cartItemCount > 0" color="danger">{{ cartItemCount }}</ion-badge>
@@ -11,7 +11,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Products</ion-title>
+      <ion-title size="large">Shopping Karo</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -24,7 +24,7 @@
     <ion-searchbar
       [(ngModel)]="searchQuery"
       (ionInput)="onSearchChange($event)"
-      placeholder="Search products..."
+      placeholder="Kya chahiye aapko?"
       debounce="300">
     </ion-searchbar>
 
@@ -42,7 +42,7 @@
     <!-- Loading Spinner -->
     <div *ngIf="loading" class="loading-container">
       <ion-spinner name="crescent"></ion-spinner>
-      <p>Loading products...</p>
+      <p>Products load ho rahe hain...</p>
     </div>
 
     <!-- Products Grid -->
@@ -55,8 +55,11 @@
               <div *ngIf="!product.imageUrl" class="placeholder-image">
                 <ion-icon name="image-outline"></ion-icon>
               </div>
+              <div *ngIf="product.discount" class="discount-badge">
+                <span>{{ product.discount }}</span>
+              </div>
               <div *ngIf="!product.inStock" class="out-of-stock-overlay">
-                <span>Out of Stock</span>
+                <span>Stock nahi hai</span>
               </div>
             </div>
 
@@ -71,7 +74,10 @@
                   </ion-icon>
                   <span class="rating-text">({{ product.reviews }})</span>
                 </div>
-                <div class="price">{{ formatPrice(product.price) }}</div>
+                <div class="price-container">
+                  <div class="current-price">{{ product.price | inrCurrency }}</div>
+                  <div *ngIf="product.originalPrice" class="original-price">{{ product.originalPrice | inrCurrency }}</div>
+                </div>
               </div>
             </ion-card-header>
 
@@ -90,7 +96,7 @@
                 [disabled]="!product.inStock"
                 (click)="addToCart(product)">
                 <ion-icon name="add-outline" slot="start"></ion-icon>
-                {{ product.inStock ? 'Add to Cart' : 'Out of Stock' }}
+                {{ product.inStock ? 'Cart mein daalein' : 'Stock nahi hai' }}
               </ion-button>
             </div>
           </ion-card>
@@ -102,9 +108,9 @@
         <ion-col size="12">
           <div class="no-products">
             <ion-icon name="search-outline" size="large"></ion-icon>
-            <h3>No products found</h3>
-            <p *ngIf="searchQuery">Try adjusting your search terms</p>
-            <p *ngIf="!searchQuery && selectedCategory !== 'All'">No products in this category</p>
+            <h3>Koi product nahi mila</h3>
+            <p *ngIf="searchQuery">Kuch aur search karke dekho</p>
+            <p *ngIf="!searchQuery && selectedCategory !== 'All'">Is category mein koi product nahi hai</p>
           </div>
         </ion-col>
       </ion-row>

@@ -1,20 +1,25 @@
 .orders-container {
   padding: 16px;
+  min-height: 100vh;
+  background: var(--ion-color-light, #f8f9fa);
 }
 
 .filter-segment {
   margin-bottom: 20px;
-  --background: var(--ion-color-light);
   border-radius: 12px;
+  background: var(--ion-color-primary-tint, #4c8dff);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 4px;
 
   ion-segment-button {
-    --color: var(--ion-color-medium);
-    --color-checked: var(--ion-color-primary);
-    --background-checked: white;
+    --color: var(--ion-color-primary-contrast, #ffffff);
+    --color-checked: var(--ion-color-primary, #3880ff);
+    --background-checked: var(--ion-color-primary-contrast, #ffffff);
     --border-radius: 8px;
-    font-size: 14px;
+    margin: 2px;
     font-weight: 500;
+    text-transform: none;
+    font-size: 14px;
     min-width: 100px;
   }
 }
@@ -25,23 +30,33 @@
   align-items: center;
   justify-content: center;
   padding: 60px 20px;
-  color: var(--ion-color-medium);
+  color: var(--ion-color-medium, #92949c);
 
   ion-spinner {
     margin-bottom: 16px;
+    --color: var(--ion-color-primary, #3880ff);
   }
 
   p {
     margin: 0;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 500;
   }
 }
 
 .order-card {
   margin-bottom: 16px;
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  background: var(--ion-color-primary-contrast, #ffffff);
+  animation: slideInUp 0.3s ease-out;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+  }
 }
 
 .order-header {
@@ -103,6 +118,56 @@
   }
 }
 
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .orders-container {
+    background: var(--ion-color-dark, #1e1e1e);
+  }
+
+  .order-card {
+    background: var(--ion-color-dark-tint, #383a3e);
+    
+    .order-header .order-info .order-date {
+      color: var(--ion-color-medium-tint, #a2a4ab);
+    }
+  }
+
+  .order-items {
+    background: var(--ion-color-dark-shade, #1a1b1e);
+
+    .order-item {
+      border-bottom-color: var(--ion-color-dark-tint, #383a3e);
+    }
+  }
+
+  .no-orders {
+    background: var(--ion-color-dark-tint, #383a3e);
+  }
+}
+
+// Mobile responsive adjustments
+@media (max-width: 768px) {
+  .orders-container {
+    padding: 12px;
+  }
+
+  .order-actions {
+    flex-direction: column;
+
+    ion-button {
+      flex: none;
+      width: 100%;
+    }
+  }
+
+  .filter-segment {
+    ion-segment-button {
+      font-size: 12px;
+      min-width: 80px;
+    }
+  }
+}
+
 .order-items {
   background: var(--ion-color-light);
   border-radius: 12px;
@@ -147,6 +212,18 @@
   }
 }
 
+// Animation keyframes
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .order-actions {
   display: flex;
   gap: 8px;
@@ -154,11 +231,19 @@
 
   ion-button {
     --border-radius: 8px;
+    --padding-start: 16px;
+    --padding-end: 16px;
     height: 36px;
     font-size: 13px;
     font-weight: 500;
+    text-transform: none;
     flex: 1;
     min-width: 100px;
+
+    &[color="danger"] {
+      --color: var(--ion-color-danger, #eb445a);
+      --border-color: var(--ion-color-danger, #eb445a);
+    }
   }
 }
 
@@ -169,32 +254,39 @@
   justify-content: center;
   padding: 80px 20px;
   text-align: center;
+  background: var(--ion-color-primary-contrast, #ffffff);
+  border-radius: 16px;
+  margin-top: 40px;
   color: var(--ion-color-medium);
 
   ion-icon {
-    color: var(--ion-color-light-shade);
+    color: var(--ion-color-medium, #92949c);
     margin-bottom: 20px;
   }
 
   h3 {
     margin: 0 0 12px 0;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
-    color: var(--ion-color-dark);
+    color: var(--ion-color-dark, #222428);
   }
 
   p {
     margin: 0 0 24px 0;
     font-size: 16px;
     line-height: 1.5;
+    color: var(--ion-color-medium, #92949c);
   }
 
   ion-button {
     --border-radius: 12px;
-    --box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.3);
-    height: 48px;
+    --padding-start: 24px;
+    --padding-end: 24px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
     font-weight: 600;
-    max-width: 200px;
+    text-transform: none;
+    min-width: 200px;
   }
 }
 

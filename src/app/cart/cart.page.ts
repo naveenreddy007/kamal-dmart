@@ -25,6 +25,7 @@ import {
 import { addIcons } from 'ionicons';
 import { removeOutline, addOutline, trashOutline, cartOutline } from 'ionicons/icons';
 import { ProductsService, CartItem } from '../services/products.service';
+import { InrCurrencyPipe } from '../pipes/inr-currency.pipe';
 
 @Component({
   selector: 'app-cart',
@@ -38,7 +39,8 @@ import { ProductsService, CartItem } from '../services/products.service';
     IonTitle,
     IonContent,
     IonList,
-
+    IonItem,
+    IonLabel,
     IonButton,
     IonIcon,
     IonBadge,
@@ -50,7 +52,8 @@ import { ProductsService, CartItem } from '../services/products.service';
     IonButtons,
     IonBackButton,
     IonToast,
-    IonAlert
+    IonAlert,
+    InrCurrencyPipe
   ]
 })
 export class CartPage implements OnInit {
@@ -69,14 +72,14 @@ export class CartPage implements OnInit {
 
   clearButtons = [
     {
-      text: 'Cancel',
+      text: 'Cancel Karo',
       role: 'cancel',
       handler: () => {
         this.showClearAlert = false;
       }
     },
     {
-      text: 'Clear',
+      text: 'Clear Karo',
       role: 'confirm',
       handler: () => {
         this.confirmClearCart();
@@ -118,7 +121,7 @@ export class CartPage implements OnInit {
 
   removeItem(productId: string) {
     this.productsService.removeFromCart(productId);
-    this.showToastMessage('Item removed from cart');
+    this.showToastMessage('Item cart se remove ho gaya');
   }
 
   clearCart() {
@@ -127,19 +130,19 @@ export class CartPage implements OnInit {
 
   confirmClearCart() {
     this.productsService.clearCart();
-    this.showToastMessage('Cart cleared');
+    this.showToastMessage('Cart clear ho gaya');
     this.showClearAlert = false;
   }
 
   proceedToCheckout() {
     if (this.cartItems.length === 0) {
-      this.showToastMessage('Your cart is empty');
+      this.showToastMessage('Aapka cart khali hai');
       return;
     }
     
     // Navigate to checkout or order page
     this.router.navigate(['/tabs/orders']);
-    this.showToastMessage('Proceeding to checkout...');
+    this.showToastMessage('Checkout ke liye ja rahe hain...');
   }
 
   continueShopping() {
@@ -152,7 +155,7 @@ export class CartPage implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return `$${price.toFixed(2)}`;
+    return `₹${price.toFixed(2)}`;
   }
 
   getItemTotal(item: CartItem): number {

@@ -28,6 +28,7 @@ import {
 import { addIcons } from 'ionicons';
 import { cartOutline, starOutline, star, addOutline } from 'ionicons/icons';
 import { ProductsService, Product } from '../services/products.service';
+import { InrCurrencyPipe } from '../pipes/inr-currency.pipe';
 
 @Component({
   selector: 'app-products',
@@ -58,13 +59,14 @@ import { ProductsService, Product } from '../services/products.service';
     IonSpinner,
     IonRefresher,
     IonRefresherContent,
-    IonToast
+    IonToast,
+    InrCurrencyPipe
   ]
 })
 export class ProductsPage implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  categories: string[] = ['All', 'Beverages', 'Food', 'Sweets', 'Bakery'];
+  categories: string[] = ['All', 'Mobiles', 'Men\'s Fashion', 'Women\'s Fashion', 'Electronics', 'Home & Kitchen'];
   selectedCategory = 'All';
   searchQuery = '';
   loading = false;
@@ -134,12 +136,12 @@ export class ProductsPage implements OnInit {
 
   addToCart(product: Product) {
     if (!product.inStock) {
-      this.showToastMessage('Product is out of stock');
+      this.showToastMessage('Yeh product stock mein nahi hai');
       return;
     }
 
     this.productsService.addToCart(product);
-    this.showToastMessage(`${product.name} added to cart`);
+    this.showToastMessage(`${product.name} cart mein add ho gaya`);
   }
 
   showToastMessage(message: string) {
@@ -163,6 +165,6 @@ export class ProductsPage implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return `$${price.toFixed(2)}`;
+    return `₹${price.toLocaleString('en-IN')}`;
   }
 }

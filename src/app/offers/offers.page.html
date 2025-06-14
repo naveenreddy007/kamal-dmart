@@ -1,13 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Nearby Offers</ion-title>
+    <ion-title>Paas Ke Offers</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Nearby Offers</ion-title>
+      <ion-title size="large">Paas Ke Offers</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -18,7 +18,7 @@
   <div class="offers-container">
     <div class="location-info" *ngIf="userLocation">
       <ion-icon name="location-outline"></ion-icon>
-      <span>Showing offers near you</span>
+      <span>Aapke paas ke offers dikha rahe hain</span>
     </div>
 
     <ion-list *ngIf="offers.length > 0; else noOffers">
@@ -32,20 +32,28 @@
             <ion-card-title>{{ offer.title }}</ion-card-title>
             <div class="discount-badge">{{ offer.discount }}</div>
           </div>
+          <div class="store-name">{{ offer.storeName }}</div>
         </ion-card-header>
 
         <ion-card-content>
           <p class="offer-description">{{ offer.description }}</p>
           
+          <div class="price-section">
+            <div class="price-container">
+              <span class="current-price">{{ offer.discountedPrice | inrCurrency }}</span>
+              <span class="original-price">{{ offer.originalPrice | inrCurrency }}</span>
+            </div>
+          </div>
+          
           <div class="offer-details">
             <div class="detail-item">
               <ion-icon name="location-outline"></ion-icon>
-              <span>{{ getDistanceText(offer.distance) }} away</span>
+              <span>{{ getDistanceText(offer.distance) }} door</span>
             </div>
             
             <div class="detail-item">
               <ion-icon name="time-outline"></ion-icon>
-              <span>Valid until {{ offer.validUntil }}</span>
+              <span>{{ offer.validUntil }} tak valid</span>
             </div>
             
             <div class="detail-item">
@@ -60,7 +68,7 @@
             color="primary" 
             class="claim-button"
             (click)="claimOffer(offer)">
-            Claim Offer
+            Offer Claim Karein
           </ion-button>
         </ion-card-content>
       </ion-card>
@@ -69,8 +77,8 @@
     <ng-template #noOffers>
       <div class="no-offers">
         <ion-icon name="pricetag-outline" size="large"></ion-icon>
-        <h3>No offers available</h3>
-        <p>Check back later for new deals near you!</p>
+        <h3>Koi offer nahi mila</h3>
+        <p>Nayi deals ke liye thodi der baad check kariye!</p>
       </div>
     </ng-template>
   </div>

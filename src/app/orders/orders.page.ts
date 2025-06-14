@@ -28,6 +28,7 @@ import {
 import { addIcons } from 'ionicons';
 import { timeOutline, locationOutline, cardOutline, closeCircleOutline, checkmarkCircleOutline, refreshOutline, receiptOutline } from 'ionicons/icons';
 import { OrdersService, Order } from '../services/orders.service';
+import { InrCurrencyPipe } from '../pipes/inr-currency.pipe';
 
 @Component({
   selector: 'app-orders',
@@ -56,7 +57,8 @@ import { OrdersService, Order } from '../services/orders.service';
     IonSegment,
     IonSegmentButton,
     IonAlert,
-    IonToast
+    IonToast,
+    InrCurrencyPipe
   ]
 })
 export class OrdersPage implements OnInit {
@@ -78,14 +80,14 @@ export class OrdersPage implements OnInit {
   toastMessage = '';
 
   cancelButtons = [
-    { text: 'Keep Order', role: 'cancel', handler: () => { this.showCancelAlert = false; this.orderToCancel = null; } },
-    { text: 'Cancel Order', role: 'confirm', handler: () => this.confirmCancelOrder() }
+    { text: 'Order Rakhein', role: 'cancel', handler: () => { this.showCancelAlert = false; this.orderToCancel = null; } },
+    { text: 'Cancel Karein', role: 'confirm', handler: () => this.confirmCancelOrder() }
   ];
 
   filterOptions = [
-    { value: 'all', label: 'All Orders' },
-    { value: 'active', label: 'Active' },
-    { value: 'completed', label: 'Completed' }
+    { value: 'all', label: 'Saare Orders' },
+    { value: 'active', label: 'Active Orders' },
+    { value: 'completed', label: 'Complete Orders' }
   ];
 
   constructor(
@@ -108,7 +110,7 @@ export class OrdersPage implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading orders:', error);
+        console.error('Orders load karne mein error:', error);
         this.loading = false;
       }
     });
@@ -154,7 +156,7 @@ export class OrdersPage implements OnInit {
       // Note: You'd need to inject ProductsService here
       // this.productsService.addToCart(item.product, item.quantity);
     });
-    this.showToastMessage('Items added to cart');
+    this.showToastMessage('Items cart mein add ho gaye');
     this.router.navigate(['/tabs/cart']);
   }
 
@@ -168,15 +170,15 @@ export class OrdersPage implements OnInit {
       this.ordersService.cancelOrder(this.orderToCancel).subscribe({
         next: (success) => {
           if (success) {
-            this.showToastMessage('Order cancelled successfully');
+            this.showToastMessage('Order successfully cancel ho gaya');
             this.loadOrders();
           } else {
-            this.showToastMessage('Unable to cancel order');
+            this.showToastMessage('Order cancel nahi ho saka');
           }
         },
         error: (error) => {
-          console.error('Error cancelling order:', error);
-          this.showToastMessage('Error cancelling order');
+          console.error('Order cancel karne mein error:', error);
+          this.showToastMessage('Order cancel karne mein error');
         }
       });
     }
@@ -197,7 +199,8 @@ export class OrdersPage implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return this.ordersService.formatPrice(price);
+    const pipe = new InrCurrencyPipe();
+    return pipe.transform(price);
   }
 
   formatDate(date: Date): string {

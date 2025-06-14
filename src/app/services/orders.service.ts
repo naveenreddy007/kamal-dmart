@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CartItem } from './products.service';
+import { InrCurrencyPipe } from '../pipes/inr-currency.pipe';
 
 export interface Order {
   id: string;
@@ -36,24 +37,24 @@ export class OrdersService {
         {
           product: {
             id: '1',
-            name: 'Premium Coffee Beans',
-            description: 'High-quality arabica coffee beans from Colombia',
-            price: 24.99,
-            category: 'Beverages',
+            name: 'Samsung Galaxy S24',
+            description: 'Latest flagship smartphone with AI features',
+            price: 79999,
+            category: 'Mobiles',
             inStock: true,
             rating: 4.8,
             reviews: 156
           },
-          quantity: 2
+          quantity: 1
         }
       ],
-      total: 49.98,
-      deliveryFee: 2.99,
-      finalTotal: 52.97,
+      total: 79999,
+      deliveryFee: 49,
+      finalTotal: 80048,
       status: 'delivered',
       orderDate: new Date('2024-01-15T10:30:00'),
-      deliveryAddress: '123 Main St, City, State 12345',
-      paymentMethod: 'Credit Card'
+      deliveryAddress: 'A-123, Sector 15, Noida, Uttar Pradesh 201301',
+      paymentMethod: 'UPI'
     },
     {
       id: 'ORD-002',
@@ -61,12 +62,12 @@ export class OrdersService {
         {
           product: {
             id: '3',
-            name: 'Artisan Chocolate',
-            description: 'Handcrafted dark chocolate with 70% cocoa',
-            price: 12.99,
-            category: 'Sweets',
+            name: 'Nike Air Max Shoes',
+            description: 'Comfortable running shoes for men',
+            price: 8999,
+            category: "Men's Fashion",
             inStock: true,
-            rating: 4.9,
+            rating: 4.6,
             reviews: 234
           },
           quantity: 1
@@ -74,25 +75,25 @@ export class OrdersService {
         {
           product: {
             id: '4',
-            name: 'Fresh Croissants',
-            description: 'Buttery, flaky croissants baked fresh daily',
-            price: 8.99,
-            category: 'Bakery',
+            name: 'Levi\'s Denim Jeans',
+            description: 'Classic blue denim jeans for men',
+            price: 2999,
+            category: "Men's Fashion",
             inStock: true,
-            rating: 4.7,
+            rating: 4.4,
             reviews: 67
           },
-          quantity: 3
+          quantity: 2
         }
       ],
-      total: 39.96,
-      deliveryFee: 2.99,
-      finalTotal: 42.95,
+      total: 14997,
+      deliveryFee: 49,
+      finalTotal: 15046,
       status: 'out_for_delivery',
       orderDate: new Date('2024-01-20T14:15:00'),
       estimatedDelivery: new Date('2024-01-20T16:00:00'),
-      deliveryAddress: '456 Oak Ave, City, State 12345',
-      paymentMethod: 'PayPal'
+      deliveryAddress: 'B-456, Bandra West, Mumbai, Maharashtra 400050',
+      paymentMethod: 'Credit Card'
     }
   ];
 
@@ -115,7 +116,7 @@ export class OrdersService {
   createOrder(cartItems: CartItem[], deliveryAddress: string, paymentMethod: string, customerNotes?: string): Observable<Order> {
     return new Observable(observer => {
       const total = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-      const deliveryFee = 2.99;
+      const deliveryFee = 49;
       const finalTotal = total + deliveryFee;
       
       const newOrder: Order = {
@@ -180,7 +181,7 @@ export class OrdersService {
       {
         status: 'pending',
         timestamp: order.orderDate,
-        description: 'Order placed successfully'
+        description: 'Order successfully place ho gaya'
       }
     ];
 
@@ -188,7 +189,7 @@ export class OrdersService {
       baseStatuses.push({
         status: 'confirmed',
         timestamp: new Date(order.orderDate.getTime() + 2 * 60 * 1000),
-        description: 'Order confirmed by restaurant'
+        description: 'Order confirm ho gaya hai'
       });
     }
 
@@ -196,7 +197,7 @@ export class OrdersService {
       baseStatuses.push({
         status: 'preparing',
         timestamp: new Date(order.orderDate.getTime() + 10 * 60 * 1000),
-        description: 'Your order is being prepared'
+        description: 'Aapka order prepare ho raha hai'
       });
     }
 
@@ -204,7 +205,7 @@ export class OrdersService {
       baseStatuses.push({
         status: 'out_for_delivery',
         timestamp: new Date(order.orderDate.getTime() + 25 * 60 * 1000),
-        description: 'Order is out for delivery'
+        description: 'Order delivery ke liye nikal gaya'
       });
     }
 
@@ -212,7 +213,7 @@ export class OrdersService {
       baseStatuses.push({
         status: 'delivered',
         timestamp: new Date(order.orderDate.getTime() + 40 * 60 * 1000),
-        description: 'Order delivered successfully'
+        description: 'Order successfully deliver ho gaya'
       });
     }
 
@@ -220,7 +221,7 @@ export class OrdersService {
       baseStatuses.push({
         status: 'cancelled',
         timestamp: new Date(),
-        description: 'Order cancelled'
+        description: 'Order cancel ho gaya'
       });
     }
 
@@ -228,7 +229,8 @@ export class OrdersService {
   }
 
   formatPrice(price: number): string {
-    return `$${price.toFixed(2)}`;
+    const pipe = new InrCurrencyPipe();
+    return pipe.transform(price);
   }
 
   getStatusColor(status: Order['status']): string {
@@ -247,8 +249,8 @@ export class OrdersService {
     switch (status) {
       case 'pending': return 'Pending';
       case 'confirmed': return 'Confirmed';
-      case 'preparing': return 'Preparing';
-      case 'out_for_delivery': return 'Out for Delivery';
+      case 'preparing': return 'Prepare ho raha';
+      case 'out_for_delivery': return 'Delivery mein';
       case 'delivered': return 'Delivered';
       case 'cancelled': return 'Cancelled';
       default: return 'Unknown';

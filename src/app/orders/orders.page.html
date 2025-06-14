@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>My Orders</ion-title>
+    <ion-title>Mere Orders</ion-title>
     <ion-button slot="end" fill="clear" (click)="loadOrders()">
       <ion-icon name="refresh-outline"></ion-icon>
     </ion-button>
@@ -10,7 +10,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">My Orders</ion-title>
+      <ion-title size="large">Mere Orders</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -32,7 +32,7 @@
     <!-- Loading Spinner -->
     <div *ngIf="loading" class="loading-container">
       <ion-spinner name="crescent"></ion-spinner>
-      <p>Loading orders...</p>
+      <p>Orders load ho rahe hain...</p>
     </div>
 
     <!-- Orders List -->
@@ -55,12 +55,12 @@
           <div class="order-summary">
             <div class="summary-item">
               <ion-icon name="card-outline"></ion-icon>
-              <span>{{ getItemCount(order) }} items • {{ formatPrice(order.finalTotal) }}</span>
+              <span>{{ getItemCount(order) }} items • {{ order.finalTotal | inrCurrency }}</span>
             </div>
             
             <div class="summary-item" *ngIf="order.estimatedDelivery && ['confirmed', 'preparing', 'out_for_delivery'].includes(order.status)">
               <ion-icon name="time-outline"></ion-icon>
-              <span>Est. delivery: {{ formatDate(order.estimatedDelivery) }}</span>
+              <span>Delivery time: {{ formatDate(order.estimatedDelivery) }}</span>
             </div>
             
             <div class="summary-item">
@@ -76,7 +76,7 @@
                 <span class="item-name">{{ item.product.name }}</span>
                 <span class="item-quantity">x{{ item.quantity }}</span>
               </div>
-              <span class="item-price">{{ formatPrice(item.product.price * item.quantity) }}</span>
+              <span class="item-price">{{ (item.product.price * item.quantity) | inrCurrency }}</span>
             </div>
           </div>
 
@@ -87,7 +87,7 @@
               size="small" 
               color="medium"
               (click)="viewOrderDetails(order.id)">
-              View Details
+              Details Dekho
             </ion-button>
             
             <ion-button 
@@ -96,7 +96,7 @@
               color="primary"
               *ngIf="order.status === 'delivered'"
               (click)="reorderItems(order)">
-              Reorder
+              Phir Se Order
             </ion-button>
             
             <ion-button 
@@ -115,10 +115,10 @@
       <!-- No Orders Found -->
       <div *ngIf="filteredOrders.length === 0" class="no-orders">
         <ion-icon name="receipt-outline" size="large"></ion-icon>
-        <h3>No orders found</h3>
-        <p *ngIf="selectedFilter === 'all'">You haven't placed any orders yet.</p>
-        <p *ngIf="selectedFilter === 'active'">You don't have any active orders.</p>
-        <p *ngIf="selectedFilter === 'completed'">You don't have any completed orders.</p>
+        <h3>Koi order nahi mila</h3>
+        <p *ngIf="selectedFilter === 'all'">Aapne abhi tak koi order nahi kiya hai.</p>
+        <p *ngIf="selectedFilter === 'active'">Aapka koi active order nahi hai.</p>
+        <p *ngIf="selectedFilter === 'completed'">Aapka koi complete order nahi hai.</p>
         
         <ion-button 
           *ngIf="selectedFilter === 'all'"
@@ -126,7 +126,7 @@
           fill="solid" 
           color="primary"
           routerLink="/tabs/products">
-          Start Shopping
+          Shopping Shuru Karein
         </ion-button>
       </div>
     </div>
@@ -135,8 +135,8 @@
   <!-- Cancel Order Alert -->
   <ion-alert
     [isOpen]="showCancelAlert"
-    header="Cancel Order"
-    message="Are you sure you want to cancel this order? This action cannot be undone."
+    header="Order Cancel Karein"
+    message="Kya aap sure hain ki aap ye order cancel karna chahte hain? Ye action undo nahi ho sakta."
     [buttons]="cancelButtons">
   </ion-alert>
 
