@@ -1,0 +1,154 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>My Orders</ion-title>
+    <ion-button slot="end" fill="clear" (click)="loadOrders()">
+      <ion-icon name="refresh-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Orders</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="orders-container">
+    <!-- Filter Segment -->
+    <ion-segment
+      [(ngModel)]="selectedFilter"
+      (ionChange)="onFilterChange($event)"
+      class="filter-segment">
+      <ion-segment-button *ngFor="let option of filterOptions" [value]="option.value">
+        <ion-label>{{ option.label }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Loading orders...</p>
+    </div>
+
+    <!-- Orders List -->
+    <div *ngIf="!loading">
+      <ion-card *ngFor="let order of filteredOrders; trackBy: trackByOrderId" class="order-card">
+        <ion-card-header>
+          <div class="order-header">
+            <div class="order-info">
+              <ion-card-title class="order-id">{{ order.id }}</ion-card-title>
+              <p class="order-date">{{ formatDate(order.orderDate) }}</p>
+            </div>
+            <ion-badge [color]="getStatusColor(order.status)" class="status-badge">
+              {{ getStatusText(order.status) }}
+            </ion-badge>
+          </div>
+        </ion-card-header>
+
+        <ion-card-content>
+          <!-- Order Items Summary -->
+          <div class="order-summary">
+            <div class="summary-item">
+              <ion-icon name="card-outline"></ion-icon>
+              <span>{{ getItemCount(order) }} items • {{ formatPrice(order.finalTotal) }}</span>
+            </div>
+            
+            <div class="summary-item" *ngIf="order.estimatedDelivery && ['confirmed', 'preparing', 'out_for_delivery'].includes(order.status)">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>Est. delivery: {{ formatDate(order.estimatedDelivery) }}</span>
+            </div>
+            
+            <div class="summary-item">
+              <ion-icon name="location-outline"></ion-icon>
+              <span>{{ order.deliveryAddress }}</span>
+            </div>
+          </div>
+
+          <!-- Order Items List -->
+          <div class="order-items">
+            <div *ngFor="let item of order.items" class="order-item">
+              <div class="item-info">
+                <span class="item-name">{{ item.product.name }}</span>
+                <span class="item-quantity">x{{ item.quantity }}</span>
+              </div>
+              <span class="item-price">{{ formatPrice(item.product.price * item.quantity) }}</span>
+            </div>
+          </div>
+
+          <!-- Order Actions -->
+          <div class="order-actions">
+            <ion-button 
+              fill="outline" 
+              size="small" 
+              color="medium"
+              (click)="viewOrderDetails(order.id)">
+              View Details
+            </ion-button>
+            
+            <ion-button 
+              fill="outline" 
+              size="small" 
+              color="primary"
+              *ngIf="order.status === 'delivered'"
+              (click)="reorderItems(order)">
+              Reorder
+            </ion-button>
+            
+            <ion-button 
+              fill="outline" 
+              size="small" 
+              color="danger"
+              *ngIf="canCancelOrder(order)"
+              (click)="cancelOrder(order.id)">
+              <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+              Cancel
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- No Orders Found -->
+      <div *ngIf="filteredOrders.length === 0" class="no-orders">
+        <ion-icon name="receipt-outline" size="large"></ion-icon>
+        <h3>No orders found</h3>
+        <p *ngIf="selectedFilter === 'all'">You haven't placed any orders yet.</p>
+        <p *ngIf="selectedFilter === 'active'">You don't have any active orders.</p>
+        <p *ngIf="selectedFilter === 'completed'">You don't have any completed orders.</p>
+        
+        <ion-button 
+          *ngIf="selectedFilter === 'all'"
+          expand="block" 
+          fill="solid" 
+          color="primary"
+          routerLink="/tabs/products">
+          Start Shopping
+        </ion-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cancel Order Alert -->
+  <ion-alert
+    [isOpen]="showCancelAlert"
+    header="Cancel Order"
+    message="Are you sure you want to cancel this order? This action cannot be undone."
+    [buttons]="cancelButtons">
+  </ion-alert>
+
+  <!-- Toast for notifications -->
+  <ion-toast
+    [isOpen]="showToast"
+    duration="3000"
+    position="bottom"
+    >
+
+        [message]="toastMessage"
+        (didDismiss)="showToast = false"
+
+  </ion-toast>
+</ion-content>

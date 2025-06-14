@@ -1,0 +1,408 @@
+.profile-container {
+  padding: 16px;
+  padding-top: 0;
+
+
+.profile-header {
+  margin-bottom: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  color: var(--ion-color-primary-contrast);
+
+  ion-card-content {
+    padding: 24px;
+  }
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .avatar-section {
+    position: relative;
+    margin-right: 20px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .membership-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    border: 2px solid var(--ion-color-primary-contrast);
+    color: var(--ion-color-primary-contrast);
+  }
+
+  .user-details {
+    flex: 1;
+  }
+
+  .user-name {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    color: var(--ion-color-primary-contrast);
+  }
+
+  .user-email {
+    font-size: 14px;
+    margin: 0 0 4px 0;
+    opacity: 0.8;
+  }
+
+  .member-since {
+    font-size: 12px;
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    text-align: center;
+  }
+
+  .stat-item {
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--ion-color-primary-contrast);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.membership-card {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+
+  ion-card-header {
+    padding-bottom: 8px;
+
+    ion-card-title {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+
+      .title-icon {
+        margin-right: 8px;
+        color: var(--ion-color-warning);
+      }
+    }
+  }
+
+  .benefits-list {
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: var(--ion-color-medium-shade);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .benefit-icon {
+        margin-right: 12px;
+        color: var(--ion-color-success);
+        font-size: 16px;
+        min-width: 16px;
+      }
+    }
+  }
+}
+
+.menu-list {
+  background: transparent;
+  margin-bottom: 16px;
+
+  .menu-item {
+    --background: var(--ion-color-light);
+    --border-radius: 12px;
+    --min-height: 64px;
+    margin-bottom: 8px;
+    border: none;
+
+    .menu-icon {
+      color: var(--ion-color-primary);
+      font-size: 24px;
+      margin-right: 16px;
+    }
+
+    ion-label {
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+        color: var(--ion-color-dark);
+      }
+
+      p {
+        font-size: 14px;
+        margin: 0;
+        color: var(--ion-color-medium);
+      }
+    }
+  }
+}
+    .chevron-icon {
+      color: var(--ion-color-medium);
+      font-size: 16px;
+    }
+
+// Modal styles
+.modal-content {
+  padding: 16px;
+
+  h4 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    color: var(--ion-color-dark);
+  }
+
+  .modal-actions {
+    padding: 16px 0;
+  }
+}
+
+.current-addresses {
+  margin-bottom: 24px;
+
+  .address-item {
+    --background: var(--ion-color-light);
+    --border-radius: 8px;
+    margin-bottom: 8px;
+
+    ion-label {
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0 0 4px 0;
+        color: var(--ion-color-dark);
+      }
+
+      p {
+        font-size: 14px;
+        margin: 0 0 2px 0;
+        color: var(--ion-color-medium-shade);
+      }
+
+      ion-badge {
+        margin-top: 4px;
+      }
+    }
+
+    ion-buttons {
+      ion-button {
+        --color: var(--ion-color-medium);
+
+        &[color="danger"] {
+          --color: var(--ion-color-danger);
+        }
+      }
+    }
+  }
+}
+
+.address-form {
+  ion-list {
+    background: transparent;
+
+    ion-item {
+      --background: var(--ion-color-light);
+      --border-radius: 8px;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.add-new-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ion-color-light-shade);
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .profile-header {
+    background: linear-gradient(135deg, var(--ion-color-primary-shade) 0%, var(--ion-color-primary-tint) 100%);
+  }
+
+  .membership-card {
+    --background: var(--ion-color-dark-tint);
+
+    ion-card-title {
+      color: var(--ion-color-light);
+    }
+  }
+
+  .menu-item {
+    --background: var(--ion-color-dark-tint);
+
+    &:hover {
+      --background: var(--ion-color-dark-shade);
+    }
+
+    ion-label {
+      h3 {
+        color: var(--ion-color-light);
+      }
+    }
+  }
+
+  .current-addresses .address-item {
+    --background: var(--ion-color-dark-tint);
+
+    ion-label {
+      h3 {
+        color: var(--ion-color-light);
+      }
+    }
+  }
+
+  .address-form ion-item {
+    --background: var(--ion-color-dark-tint);
+  }
+
+  .modal-content h4 {
+    color: var(--ion-color-light);
+  
+}
+// Responsive design
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 12px;
+    padding-top: 0;
+  }
+
+  .profile-header {
+    ion-card-content {
+      padding: 20px;
+    }
+
+    .profile-info {
+      flex-direction: column;
+      text-align: center;
+      margin-bottom: 20px;
+
+      .avatar-section {
+        margin-right: 0;
+        margin-bottom: 16px;
+      }
+    }
+
+    .user-name {
+      font-size: 22px;
+    }
+
+    .stats-grid {
+      gap: 12px;
+
+      .stat-value {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .menu-item {
+    --min-height: 56px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+
+    .menu-icon {
+      font-size: 20px;
+      margin-right: 12px;
+    }
+
+    ion-label {
+      h3 {
+        font-size: 15px;
+      }
+
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .modal-content {
+    padding: 12px;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .profile-header {
+    background: linear-gradient(135deg, var(--ion-color-primary-shade) 0%, var(--ion-color-primary-tint) 100%);
+  }
+
+  .membership-card {
+    --background: var(--ion-color-dark-tint);
+
+    ion-card-title {
+      color: var(--ion-color-light);
+    }
+  }
+
+  .menu-item {
+    --background: var(--ion-color-dark-tint);
+
+    &:hover {
+      --background: var(--ion-color-dark-shade);
+    }
+
+    ion-label {
+      h3 {
+        color: var(--ion-color-light);
+      }
+    }
+  }
+
+  .current-addresses .address-item {
+    --background: var(--ion-color-dark-tint);
+
+    ion-label {
+      h3 {
+        color: var(--ion-color-light);
+      }
+    }
+  }
+
+  .address-form ion-item {
+    --background: var(--ion-color-dark-tint);
+  }
+
+  .modal-content h4 {
+    color: var(--ion-color-light);
+  }
+}
+}

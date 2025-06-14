@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="home-container">
+    <ion-card>
+      <img src="assets/shapes.svg" alt="App Banner" />
+      <ion-card-header>
+        <ion-card-title>Welcome to Photo Navi</ion-card-title>
+        <ion-card-subtitle>Your navigation companion</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button expand="block" routerLink="/tabs/tab2">
+          <ion-icon slot="start" name="map"></ion-icon>
+          Open Map
+        </ion-button>
+        <ion-button expand="block" fill="outline" routerLink="/tabs/offers">
+          <ion-icon slot="start" name="pricetag"></ion-icon>
+          View Offers
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

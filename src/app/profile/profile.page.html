@@ -1,0 +1,359 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="logout()">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="profile-container" *ngIf="user">
+    <!-- Profile Header -->
+    <ion-card class="profile-header">
+      <ion-card-content>
+        <div class="profile-info">
+          <div class="avatar-section">
+            <ion-avatar class="profile-avatar" (click)="changeAvatar()">
+              <img [src]="user.avatar || 'assets/avatars/default-avatar.svg'" [alt]="user.firstName + ' ' + user.lastName">
+              <div class="avatar-overlay">
+                <ion-icon name="camera-outline"></ion-icon>
+              </div>
+            </ion-avatar>
+            <ion-badge 
+              [style.background-color]="getMembershipColor()"
+              class="membership-badge">
+              {{ user.membershipLevel | titlecase }}
+            </ion-badge>
+          </div>
+          
+          <div class="user-details">
+            <h2 class="user-name">{{ user.firstName }} {{ user.lastName }}</h2>
+            <p class="user-email">{{ user.email }}</p>
+            <p class="member-since">Member since {{ formatDate(user.joinDate) }}</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">{{ user.totalOrders }}</div>
+            <div class="stat-label">Orders</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ formatCurrency(user.totalSpent) }}</div>
+            <div class="stat-label">Total Spent</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">{{ user.addresses.length }}</div>
+            <div class="stat-label">Addresses</div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Membership Benefits -->
+    <ion-card class="membership-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="star-outline" class="title-icon"></ion-icon>
+          {{ user.membershipLevel | titlecase }} Membership
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="benefits-list">
+          <div 
+            *ngFor="let benefit of getMembershipBenefits()" 
+            class="benefit-item">
+            <ion-icon name="gift-outline" class="benefit-icon"></ion-icon>
+            <span>{{ benefit }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Menu Items -->
+    <ion-list class="menu-list">
+      <ion-item 
+        *ngFor="let item of menuItems" 
+        button 
+        (click)="onMenuItemClick(item.action)"
+        class="menu-item">
+        <ion-icon [name]="item.icon" slot="start" class="menu-icon"></ion-icon>
+        <ion-label>
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.subtitle }}</p>
+        </ion-label>
+        <ion-icon name="chevron-forward-outline" slot="end" class="chevron-icon"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <ion-modal [isOpen]="showEditModal" (didDismiss)="showEditModal = false">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Edit Profile</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="showEditModal = false">Cancel</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <div class="modal-content">
+          <ion-list>
+            <ion-item>
+              <ion-input 
+                label="First Name" 
+                labelPlacement="stacked"
+                [(ngModel)]="editForm.firstName"
+                placeholder="Enter first name">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input 
+                label="Last Name" 
+                labelPlacement="stacked"
+                [(ngModel)]="editForm.lastName"
+                placeholder="Enter last name">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input 
+                label="Email" 
+                labelPlacement="stacked"
+                type="email"
+                [(ngModel)]="editForm.email"
+                placeholder="Enter email">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input 
+                label="Phone" 
+                labelPlacement="stacked"
+                type="tel"
+                [(ngModel)]="editForm.phone"
+                placeholder="Enter phone number">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input 
+                label="Date of Birth" 
+                labelPlacement="stacked"
+                type="date"
+                [(ngModel)]="editForm.dateOfBirth">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-select 
+                label="Gender" 
+                labelPlacement="stacked"
+                [(ngModel)]="editForm.gender"
+                placeholder="Select gender">
+                <ion-select-option value="male">Male</ion-select-option>
+                <ion-select-option value="female">Female</ion-select-option>
+                <ion-select-option value="other">Other</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          
+          <div class="modal-actions">
+            <ion-button expand="block" (click)="saveProfile()">
+              Save Changes
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+  </ion-modal>
+
+  <!-- Address Management Modal -->
+  <ion-modal [isOpen]="showAddressModal" (didDismiss)="showAddressModal = false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>{{ editingAddress ? 'Edit Address' : 'Add Address' }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="showAddressModal = false">Cancel</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <div class="modal-content">
+          <!-- Current Addresses -->
+          <div *ngIf="!editingAddress && user?.addresses?.length > 0" class="current-addresses">
+            <h4>Current Addresses</h4>
+            <ion-list>
+              <ion-item *ngFor="let address of user?.addresses" class="address-item">
+                <ion-label>
+                  <h3>{{ address.label }}</h3>
+                  <p>{{ address.street }}</p>
+                  <p>{{ address.city }}, {{ address.state }} {{ address.zipCode }}</p>
+                  <ion-badge *ngIf="address.isDefault" color="primary">Default</ion-badge>
+                </ion-label>
+                <ion-buttons slot="end">
+                  <ion-button fill="clear" (click)="openAddressForm(address)">
+                    <ion-icon name="exit-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                  <ion-button fill="clear" color="danger" (click)="deleteAddress(address)">
+                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </ion-item>
+            </ion-list>
+          </div>
+
+          <!-- Address Form -->
+          <div *ngIf="editingAddress || user?.addresses?.length === 0" class="address-form">
+            <h4 *ngIf="user?.addresses?.length > 0">{{ editingAddress ? 'Edit Address' : 'Add New Address' }}</h4>
+            <ion-list>
+              <ion-item>
+                <ion-select 
+                  label="Type" 
+                  labelPlacement="stacked"
+                  [(ngModel)]="addressForm.type">
+                  <ion-select-option value="home">Home</ion-select-option>
+                  <ion-select-option value="work">Work</ion-select-option>
+                  <ion-select-option value="other">Other</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-input 
+                  label="Label" 
+                  labelPlacement="stacked"
+                  [(ngModel)]="addressForm.label"
+                  placeholder="e.g., Home, Office">
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-textarea 
+                  label="Street Address" 
+                  labelPlacement="stacked"
+                  [(ngModel)]="addressForm.street"
+                  placeholder="Enter street address"
+                  rows="2">
+                </ion-textarea>
+              </ion-item>
+              <ion-item>
+                <ion-input 
+                  label="City" 
+                  labelPlacement="stacked"
+                  [(ngModel)]="addressForm.city"
+                  placeholder="Enter city">
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input 
+                  label="State" 
+                  labelPlacement="stacked"
+                  [(ngModel)]="addressForm.state"
+                  placeholder="Enter state">
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input 
+                  label="ZIP Code" 
+                  labelPlacement="stacked"
+                  [(ngModel)]="addressForm.zipCode"
+                  placeholder="Enter ZIP code">
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-input 
+                  label="Country" 
+                  labelPlacement="stacked"
+                  [(ngModel)]="addressForm.country"
+                  placeholder="Enter country">
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-toggle 
+                  [(ngModel)]="addressForm.isDefault"
+                  slot="end">
+                </ion-toggle>
+                <ion-label>Set as default address</ion-label>
+              </ion-item>
+            </ion-list>
+            
+            <div class="modal-actions">
+              <ion-button expand="block" (click)="saveAddress()">
+                {{ editingAddress ? 'Update Address' : 'Add Address' }}
+              </ion-button>
+            </div>
+          </div>
+
+          <!-- Add New Button -->
+          <div *ngIf="!editingAddress && user?.addresses?.length > 0" class="add-new-section">
+            <ion-button expand="block" fill="outline" (click)="openAddressForm()">
+              <ion-icon name="add-outline" slot="start"></ion-icon>
+              Add New Address
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Avatar Action Sheet -->
+  <ion-action-sheet
+    [isOpen]="showActionSheet"
+    header="Change Profile Picture"
+    [buttons]="[
+      {
+        text: 'Take Photo',
+        icon: 'camera-outline',
+        role: 'camera'
+      },
+      {
+        text: 'Choose from Gallery',
+        icon: 'images-outline',
+        role: 'gallery'
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel'
+      }
+    ]"
+    (didDismiss)="onActionSheetDismiss($event)">
+  </ion-action-sheet>
+
+  <!-- Logout Alert -->
+  <ion-alert
+    [isOpen]="showLogoutAlert"
+    header="Logout"
+    message="Are you sure you want to logout?"
+    [buttons]="[
+      {
+        text: 'Cancel',
+        role: 'cancel'
+      },
+      {
+        text: 'Logout',
+        role: 'destructive'
+      }
+    ]"
+    (didDismiss)="onLogoutAlertDismiss($event)">
+  </ion-alert>
+
+  <!-- Toast -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    duration="2000"
+    position="bottom"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

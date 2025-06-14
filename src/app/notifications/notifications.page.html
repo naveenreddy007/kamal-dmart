@@ -1,0 +1,129 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notifications</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="markAllAsRead()" [disabled]="unreadCount === 0">
+        <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="clearAllNotifications()" [disabled]="notifications.length === 0">
+        <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Notifications</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="notifications-container">
+    <!-- Filter Segment -->
+    <ion-segment 
+      [value]="selectedFilter" 
+      (ionChange)="onFilterChange($event)"
+      class="filter-segment">
+      <ion-segment-button 
+        *ngFor="let option of filterOptions" 
+        [value]="option.value">
+        <ion-label>{{ option.label }}</ion-label>
+        <ion-badge 
+          *ngIf="option.value === 'unread' && unreadCount > 0" 
+          color="danger"
+          class="filter-badge">
+          {{ unreadCount }}
+        </ion-badge>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Notifications List -->
+    <ion-list *ngIf="filteredNotifications.length > 0" class="notifications-list">
+      <ion-item-sliding *ngFor="let notification of filteredNotifications; trackBy: trackByNotificationId">
+        <ion-item 
+          button 
+          (click)="onNotificationClick(notification)"
+          [class.unread]="!notification.read"
+          class="notification-item">
+          
+          <ion-icon 
+            [name]="getNotificationIcon(notification.type)" 
+            [color]="getNotificationColor(notification.type)"
+            slot="start"
+            class="notification-icon">
+          </ion-icon>
+          
+          <ion-label class="notification-content">
+            <div class="notification-header">
+              <h3 class="notification-title">{{ notification.title }}</h3>
+              <span class="notification-time">{{ formatTimestamp(notification.timestamp) }}</span>
+            </div>
+            <p class="notification-message">{{ notification.message }}</p>
+            <div class="notification-meta">
+              <ion-badge 
+                [color]="getNotificationColor(notification.type)"
+                class="type-badge">
+                {{ notification.type | titlecase }}
+              </ion-badge>
+              <ion-badge 
+                *ngIf="!notification.read" 
+                color="danger" 
+                class="unread-badge">
+                New
+              </ion-badge>
+            </div>
+          </ion-label>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option 
+            *ngIf="!notification.read"
+            color="primary" 
+            (click)="markAsRead(notification)">
+            <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+          </ion-item-option>
+          <ion-item-option 
+            color="danger" 
+            (click)="deleteNotification(notification)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredNotifications.length === 0" class="empty-state">
+      <ion-icon name="notifications-outline" class="empty-icon"></ion-icon>
+      <h3>No Notifications</h3>
+      <p *ngIf="selectedFilter === 'all'">You don't have any notifications yet.</p>
+      <p *ngIf="selectedFilter === 'unread'">All notifications have been read.</p>
+      <p *ngIf="selectedFilter === 'order'">No order notifications found.</p>
+      <p *ngIf="selectedFilter === 'offer'">No offer notifications found.</p>
+    </div>
+  </div>
+
+  <!-- Clear All Alert -->
+  <ion-alert
+    [isOpen]="showClearAlert"
+    header="Clear All Notifications"
+    message="Are you sure you want to delete all notifications? This action cannot be undone."
+    [buttons]="clearAllButtons">
+  </ion-alert>
+
+  <!-- Toast -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    duration="2000"
+    position="bottom"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

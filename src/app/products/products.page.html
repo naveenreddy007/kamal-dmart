@@ -1,0 +1,122 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Products</ion-title>
+    <ion-button slot="end" fill="clear" routerLink="/tabs/cart">
+      <ion-icon name="cart-outline"></ion-icon>
+      <ion-badge *ngIf="cartItemCount > 0" color="danger">{{ cartItemCount }}</ion-badge>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Products</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="products-container">
+    <!-- Search Bar -->
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      (ionInput)="onSearchChange($event)"
+      placeholder="Search products..."
+      debounce="300">
+    </ion-searchbar>
+
+    <!-- Category Filter -->
+    <ion-segment
+      [(ngModel)]="selectedCategory"
+      (ionChange)="onCategoryChange($event)"
+      scrollable="true"
+      class="category-segment">
+      <ion-segment-button *ngFor="let category of categories" [value]="category">
+        <ion-label>{{ category }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Loading products...</p>
+    </div>
+
+    <!-- Products Grid -->
+    <ion-grid *ngIf="!loading">
+      <ion-row>
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let product of filteredProducts">
+          <ion-card class="product-card" [class.out-of-stock]="!product.inStock">
+            <div class="product-image">
+              <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name" />
+              <div *ngIf="!product.imageUrl" class="placeholder-image">
+                <ion-icon name="image-outline"></ion-icon>
+              </div>
+              <div *ngIf="!product.inStock" class="out-of-stock-overlay">
+                <span>Out of Stock</span>
+              </div>
+            </div>
+
+            <ion-card-header>
+              <ion-card-title>{{ product.name }}</ion-card-title>
+              <div class="product-meta">
+                <div class="rating" *ngIf="product.rating">
+                  <ion-icon
+                    *ngFor="let filled of getStarArray(product.rating)"
+                    [name]="filled ? 'star' : 'star-outline'"
+                    [class.filled]="filled">
+                  </ion-icon>
+                  <span class="rating-text">({{ product.reviews }})</span>
+                </div>
+                <div class="price">{{ formatPrice(product.price) }}</div>
+              </div>
+            </ion-card-header>
+
+            <ion-card-content>
+              <p class="product-description">{{ product.description }}</p>
+              <div class="product-category">
+                <ion-badge color="medium">{{ product.category }}</ion-badge>
+              </div>
+            </ion-card-content>
+
+            <div class="card-actions">
+              <ion-button
+                expand="block"
+                fill="solid"
+                color="primary"
+                [disabled]="!product.inStock"
+                (click)="addToCart(product)">
+                <ion-icon name="add-outline" slot="start"></ion-icon>
+                {{ product.inStock ? 'Add to Cart' : 'Out of Stock' }}
+              </ion-button>
+            </div>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <!-- No Products Found -->
+      <ion-row *ngIf="filteredProducts.length === 0 && !loading">
+        <ion-col size="12">
+          <div class="no-products">
+            <ion-icon name="search-outline" size="large"></ion-icon>
+            <h3>No products found</h3>
+            <p *ngIf="searchQuery">Try adjusting your search terms</p>
+            <p *ngIf="!searchQuery && selectedCategory !== 'All'">No products in this category</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Toast for notifications -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    duration="2000"
+    position="bottom"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

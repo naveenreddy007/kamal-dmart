@@ -1,0 +1,170 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/products"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Shopping Cart</ion-title>
+    <ion-button 
+      slot="end" 
+      fill="clear" 
+      color="danger"
+      *ngIf="cartItems.length > 0"
+      (click)="clearCart()">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Shopping Cart</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="cart-container">
+    <!-- Cart Items -->
+    <div *ngIf="cartItems.length > 0; else emptyCart">
+      <ion-list class="cart-list">
+        <ion-card *ngFor="let item of cartItems" class="cart-item">
+          <ion-card-content>
+            <ion-grid>
+              <ion-row class="ion-align-items-center">
+                <!-- Product Image -->
+                <ion-col size="3">
+                  <div class="product-image">
+                    <img *ngIf="item.product.imageUrl" [src]="item.product.imageUrl" [alt]="item.product.name" />
+                    <div *ngIf="!item.product.imageUrl" class="placeholder-image">
+                      <ion-icon name="image-outline"></ion-icon>
+                    </div>
+                  </div>
+                </ion-col>
+
+                <!-- Product Details -->
+                <ion-col size="6">
+                  <div class="product-details">
+                    <h3 class="product-name">{{ item.product.name }}</h3>
+                    <p class="product-price">{{ formatPrice(item.product.price) }} each</p>
+                    <ion-badge color="medium" class="product-category">{{ item.product.category }}</ion-badge>
+                  </div>
+                </ion-col>
+
+                <!-- Quantity Controls -->
+                <ion-col size="3">
+                  <div class="quantity-controls">
+                    <div class="quantity-buttons">
+                      <ion-button 
+                        size="small" 
+                        fill="clear" 
+                        color="medium"
+                        [disabled]="item.quantity <= 1"
+                        (click)="decreaseQuantity(item.product.id)">
+                        <ion-icon name="remove-outline"></ion-icon>
+                      </ion-button>
+                      
+                      <span class="quantity">{{ item.quantity }}</span>
+                      
+                      <ion-button 
+                        size="small" 
+                        fill="clear" 
+                        color="medium"
+                        (click)="increaseQuantity(item.product.id)">
+                        <ion-icon name="add-outline"></ion-icon>
+                      </ion-button>
+                    </div>
+                    
+                    <div class="item-total">
+                      {{ formatPrice(getItemTotal(item)) }}
+                    </div>
+                    
+                    <ion-button 
+                      size="small" 
+                      fill="clear" 
+                      color="danger"
+                      class="remove-button"
+                      (click)="removeItem(item.product.id)">
+                      <ion-icon name="trash-outline"></ion-icon>
+                    </ion-button>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-content>
+        </ion-card>
+      </ion-list>
+
+      <!-- Cart Summary -->
+      <ion-card class="cart-summary">
+        <ion-card-content>
+          <div class="summary-row">
+            <span class="summary-label">Subtotal ({{ cartItems.length }} items):</span>
+            <span class="summary-value">{{ formatPrice(total) }}</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Delivery Fee:</span>
+            <span class="summary-value">$2.99</span>
+          </div>
+          <div class="summary-row total-row">
+            <span class="summary-label">Total:</span>
+            <span class="summary-value">{{ formatPrice(total + 2.99) }}</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <ion-button 
+          expand="block" 
+          fill="outline" 
+          color="medium"
+          class="continue-shopping-btn"
+          (click)="continueShopping()">
+          Continue Shopping
+        </ion-button>
+        
+        <ion-button 
+          expand="block" 
+          fill="solid" 
+          color="primary"
+          class="checkout-btn"
+          (click)="proceedToCheckout()">
+          <ion-icon name="cartOutline" slot="start"></ion-icon>
+          Proceed to Checkout
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Empty Cart -->
+    <ng-template #emptyCart>
+      <div class="empty-cart">
+        <ion-icon name="cart-outline" size="large"></ion-icon>
+        <h3>Your cart is empty</h3>
+        <p>Add some products to get started!</p>
+        <ion-button 
+          expand="block" 
+          fill="solid" 
+          color="primary"
+          (click)="continueShopping()">
+          Start Shopping
+        </ion-button>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Clear Cart Alert -->
+  <ion-alert
+    [isOpen]="showClearAlert"
+    header="Clear Cart"
+    message="Are you sure you want to remove all items from your cart?"
+    [buttons]="clearButtons">
+  </ion-alert>
+
+  <!-- Toast for notifications -->
+  <ion-toast
+    [isOpen]="showToast"
+    [message]="toastMessage"
+    duration="2000"
+    position="bottom"
+    (didDismiss)="showToast = false">
+  </ion-toast>
+</ion-content>

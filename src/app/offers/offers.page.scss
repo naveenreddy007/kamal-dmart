@@ -1,0 +1,165 @@
+.offers-container {
+  padding: 16px;
+  max-width: 100%;
+}
+
+.location-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--ion-color-light);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    color: var(--ion-color-primary);
+  }
+}
+
+.offer-card {
+  margin-bottom: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.offer-image {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.offer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+
+  ion-card-title {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+}
+
+.discount-badge {
+  background: linear-gradient(135deg, var(--ion-color-success), var(--ion-color-success-shade));
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(var(--ion-color-success-rgb), 0.3);
+}
+
+.offer-description {
+  color: var(--ion-color-medium);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.offer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    font-size: 16px;
+    color: var(--ion-color-primary);
+    flex-shrink: 0;
+  }
+}
+
+.claim-button {
+  margin-top: 12px;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.3);
+  font-weight: 600;
+  height: 44px;
+}
+
+.no-offers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    color: var(--ion-color-light-shade);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+// Responsive design
+@media (min-width: 768px) {
+  .offers-container {
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .offer-card {
+    margin-bottom: 20px;
+  }
+
+  .offer-details {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .detail-item {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .offers-container {
+    max-width: 1024px;
+    padding: 32px;
+  }
+}
