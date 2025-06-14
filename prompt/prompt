@@ -1,0 +1,78 @@
+### **Master Prompt: Ionic E-Commerce UI/UX Overhaul & Completion**
+
+**Objective:**
+Your primary mission is to perform a targeted refactoring of the provided Ionic/Cordova e-commerce project. You will act as a Senior UI/UX Engineer and Full-Stack Developer. The focus is on transforming the user interface, particularly the homepage, into a modern, attractive, and highly functional mobile experience. You will also restructure the app's navigation and ensure complete functionality.
+
+**Phase 1: Codebase Analysis**
+
+1.  **Initial Audit:**
+    *   Perform a complete scan of the project (`src/`) to map all existing pages, components, services, and routing configurations.
+    *   Identify all placeholder content and non-functional code blocks. This initial map is crucial for the refactoring process.
+
+**Phase 2: Core Execution Directives**
+
+**Directive 1: Complete Homepage Transformation**
+The current homepage is insufficient. You will rebuild it from the ground up to be a dynamic and engaging dashboard. The layout should be a single, vertically scrolling page (`<ion-content>`) composed of the following distinct sections in order:
+
+1.  **Dynamic Location Header:**
+    *   Integrate the Cordova Geolocation plugin (`cordova-plugin-geolocation`).
+    *   On homepage load, request location permissions. Upon approval, fetch the user's current city and pincode.
+    *   Display this information prominently in the homepage's top toolbar (`<ion-header>`). The format must be: "Delivering to: **[City, Pincode]**". Use an appropriate location icon (`<ion-icon name="location-outline">`).
+2.  **Promotional Banners:**
+    *   Implement a full-width, auto-playing, and infinitely looping image carousel using `<ion-slides>`.
+    *   Populate it with 3-4 high-resolution, attractive promotional banner images sourced from a service like Unsplash or Pexels. These images should be general e-commerce themes (e.g., "Mega Sale," "New Collection").
+3.  **Category Showcase:**
+    *   Create a horizontally scrolling list for product categories.
+    *   Each category item must be a circular `ion-avatar` or a card with a relevant icon (e.g., "shirt" for Fashion, "phone-portrait" for Electronics) and a label below it (e.g., "Mobiles," "Fashion," "Grocery").
+    *   This section should display 5-7 key categories and must be tappable, linking to the respective category pages.
+4.  **Latest Offers Section:**
+    *   Design a visually distinct section with a title like "Hottest Deals."
+    *   Display 2-3 large, clickable offer cards. Each card should have a compelling background image and text overlay (e.g., "FLAT 50% OFF on Footwear").
+5.  **Product Carousels (Replaces Grid View):**
+    *   **Crucial:** You must eliminate the old vertical grid layout for products on the homepage.
+    *   Implement **horizontally scrolling product carousels** using `<ion-slides>` with `slidesPerView="auto"` for a smooth, native feel.
+    *   Create at least two such carousels, e.g., "Trending Products" and "New Arrivals."
+    *   Each item within the carousel will be a product card containing an image, product name, price, and a quick-add-to-cart button. The scroll must be smooth.
+
+**Directive 2: Navigation & Tab Bar Overhaul**
+The app's navigation needs to be simplified and made more intuitive.
+
+1.  **Tab Bar Restructuring:**
+    *   The main bottom tab bar (`<ion-tabs>`) must contain **only four (4) primary tabs**:
+        *   **Home:** (icon: `home`)
+        *   **Categories:** (icon: `grid`)
+        *   **Cart:** (icon: `cart`)
+        *   **Profile:** (icon: `person-circle`)
+2.  **Tab Bar Icon Polish:**
+    *   Ensure all tab icons are clear, high-quality vectors from Ionicons.
+    *   Implement a subtle animation for the active tab: when a tab is selected, its icon and label should smoothly scale up (e.g., `transform: scale(1.15);`) and change to the app's primary color. The transition must be smooth.
+3.  **Profile Page as a Navigation Hub:**
+    *   Redesign the Profile page. It is no longer just a user info display. It must contain an `<ion-list>` that serves as the secondary navigation menu.
+    *   Move all other navigation links (e.g., "My Orders," "Wishlist," "My Addresses," "Settings," "Help & Support," "Logout") into this list on the Profile page. Each list item must have an appropriate icon and navigate to its respective page.
+
+**Directive 3: Product & App-Wide Polish**
+
+1.  **Product Interaction:**
+    *   Ensure every product card (in the new homepage carousels or on category pages) is clickable.
+    *   Clicking a product must route to its dedicated `ProductDetailPage`.
+    *   The `ProductDetailPage` must be fully functional: it must display an image gallery (or a primary image), product title, full description, price (in INR ₹), variant selectors (if any), and a prominent "Add to Cart" button.
+2.  **Language & Localization:**
+    *   **Set the entire application language to English.** Scour the entire project and convert any Hindi or Hinglish text (static labels, buttons, alerts, placeholders) to clear, professional English.
+    *   Ensure all currency remains Indian Rupees (INR, ₹).
+3.  **Routing Integrity and Page Creation:**
+    *   Audit every single button and link (`routerLink`, `(click)`).
+    *   If any interactive element points to a non-existent route, you **must create the page**. Use Ionic CLI conventions to generate a new page with a basic header, title, and back button.
+    *   Ensure all newly created pages are correctly wired in the `app-routing.module.ts`.
+
+**Phase 3: Completion & Final Report**
+
+**Definition of "Done":**
+The task is finished when:
+1.  The homepage is completely rebuilt according to **Directive 1**, including live location in the header and horizontal product carousels.
+2.  The navigation is restructured as per **Directive 2**, with a 4-tab bar and a Profile page acting as a secondary navigation hub. Tab icons are animated.
+3.  All products are clickable and route to a detailed, functional product page.
+4.  The entire app's UI text is in **English**.
+5.  There are absolutely no dead links or non-functional buttons. Every click leads somewhere.
+
+**Final Output:**
+Provide a summary report detailing the pages created, the plugins added (Geolocation), the major UI changes, and the fully refactored, completed source code.

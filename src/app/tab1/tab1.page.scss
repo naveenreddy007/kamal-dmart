@@ -3,6 +3,21 @@
   padding-bottom: 80px;
 }
 
+// Location display in header
+.location-text {
+  font-size: 0.8rem;
+  margin-left: 4px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+ion-header ion-button {
+  --color: var(--ion-color-medium);
+  font-size: 0.8rem;
+}
+
 .welcome-banner {
   margin-bottom: 20px;
   border-radius: 12px;

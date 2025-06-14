@@ -39,8 +39,6 @@ import { InrCurrencyPipe } from '../pipes/inr-currency.pipe';
     IonTitle,
     IonContent,
     IonList,
-    IonItem,
-    IonLabel,
     IonButton,
     IonIcon,
     IonBadge,

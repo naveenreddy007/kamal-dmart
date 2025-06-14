@@ -52,7 +52,10 @@ import {
   helpCircleOutline,
   informationCircleOutline,
   chevronForwardOutline,
-  cameraOutline
+  cameraOutline,
+  receiptOutline,
+  pricetagOutline,
+  heartOutline
 } from 'ionicons/icons';
 import { ProfileService, UserProfile, Address } from '../services/profile.service';
 
@@ -127,6 +130,24 @@ export class ProfilePage implements OnInit {
 
   menuItems = [
     {
+      icon: 'receipt-outline',
+      title: 'My Orders',
+      subtitle: 'Track and manage your orders',
+      action: 'orders'
+    },
+    {
+      icon: 'pricetag-outline',
+      title: 'Offers & Deals',
+      subtitle: 'Discover amazing offers',
+      action: 'offers'
+    },
+    {
+      icon: 'heart-outline',
+      title: 'Wishlist',
+      subtitle: 'Your saved items',
+      action: 'wishlist'
+    },
+    {
       icon: 'person-outline',
       title: 'Edit Profile',
       subtitle: 'Update your personal information',
@@ -134,7 +155,7 @@ export class ProfilePage implements OnInit {
     },
     {
       icon: 'location-outline',
-      title: 'Addresses',
+      title: 'My Addresses',
       subtitle: 'Manage delivery addresses',
       action: 'manageAddresses'
     },
@@ -145,28 +166,22 @@ export class ProfilePage implements OnInit {
       action: 'notifications'
     },
     {
-      icon: 'shield-outline',
-      title: 'Privacy & Security',
-      subtitle: 'Privacy settings and security',
-      action: 'privacy'
-    },
-    {
       icon: 'card-outline',
       title: 'Payment Methods',
       subtitle: 'Manage payment options',
       action: 'payment'
     },
     {
+      icon: 'settings-outline',
+      title: 'Settings',
+      subtitle: 'App preferences and settings',
+      action: 'settings'
+    },
+    {
       icon: 'help-circle-outline',
       title: 'Help & Support',
       subtitle: 'Get help and contact support',
       action: 'help'
-    },
-    {
-      icon: 'information-circle-outline',
-      title: 'About',
-      subtitle: 'App version and legal info',
-      action: 'about'
     }
   ];
 
@@ -190,7 +205,10 @@ export class ProfilePage implements OnInit {
       helpCircleOutline,
       informationCircleOutline,
       chevronForwardOutline,
-      cameraOutline
+      cameraOutline,
+      receiptOutline,
+      pricetagOutline,
+      heartOutline
     });
   }
 
@@ -223,6 +241,15 @@ export class ProfilePage implements OnInit {
 
   onMenuItemClick(action: string) {
     switch (action) {
+      case 'orders':
+        this.router.navigate(['/tabs/orders']);
+        break;
+      case 'offers':
+        this.router.navigate(['/tabs/offers']);
+        break;
+      case 'wishlist':
+        this.showToastMessage('Wishlist feature coming soon');
+        break;
       case 'editProfile':
         this.showEditModal = true;
         break;
@@ -233,17 +260,14 @@ export class ProfilePage implements OnInit {
       case 'notifications':
         this.router.navigate(['/tabs/notifications']);
         break;
-      case 'privacy':
-        this.showToastMessage('Privacy settings coming soon');
-        break;
       case 'payment':
         this.showToastMessage('Payment methods coming soon');
         break;
+      case 'settings':
+        this.showToastMessage('Settings coming soon');
+        break;
       case 'help':
         this.showToastMessage('Help & Support coming soon');
-        break;
-      case 'about':
-        this.showToastMessage('About page coming soon');
         break;
     }
   }

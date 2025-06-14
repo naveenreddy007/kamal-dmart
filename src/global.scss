@@ -35,3 +35,58 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* Global App Enhancements */
+:root {
+  --ion-color-primary: #3880ff;
+  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #4c8dff;
+}
+
+/* Smooth transitions for better UX */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Enhanced button styles */
+ion-button {
+  --border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Card enhancements */
+ion-card {
+  --border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading spinner customization */
+ion-spinner {
+  --color: var(--ion-color-primary);
+}
+
+/* Toast message styling */
+ion-toast {
+  --border-radius: 8px;
+}
+
+/* Tab bar enhancements */
+ion-tab-bar {
+  --border: 1px solid var(--ion-color-light-shade);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Segment button improvements */
+ion-segment-button {
+  --border-radius: 6px;
+  --indicator-border-radius: 6px;
+}
+
+/* Search bar styling */
+ion-searchbar {
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
