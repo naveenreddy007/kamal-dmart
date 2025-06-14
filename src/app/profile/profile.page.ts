@@ -92,9 +92,7 @@ import { ProfileService, UserProfile, Address } from '../services/profile.servic
     IonInput,
     IonTextarea,
     IonModal,
-    IonGrid,
-    IonRow,
-    IonCol
+
   ]
 })
 export class ProfilePage implements OnInit {

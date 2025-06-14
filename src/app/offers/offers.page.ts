@@ -33,8 +33,7 @@ interface Offer {
     IonCardContent,
     IonButton,
     IonIcon,
-    IonItem,
-    IonLabel,
+
     IonList,
     IonRefresher,
     IonRefresherContent
@@ -58,8 +57,8 @@ export class OffersPage implements OnInit {
     try {
       const position = await this.locationService.getCurrentLocation();
       this.userLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
+        lat: position.latitude,
+        lng: position.longitude
       };
     } catch (error) {
       console.error('Error getting location:', error);

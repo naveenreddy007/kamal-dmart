@@ -75,7 +75,7 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-geolocation": {
-        "GPS_REQUIRED": "true"
+        "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
       },
       "cordova-plugin-network-information": {}
     },

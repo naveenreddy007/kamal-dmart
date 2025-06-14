@@ -58,8 +58,7 @@ import { NotificationsService, Notification } from '../services/notifications.se
     IonButton,
     IonIcon,
     IonBadge,
-    IonCard,
-    IonCardContent,
+
     IonRefresher,
     IonRefresherContent,
     IonSegment,

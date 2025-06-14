@@ -38,8 +38,7 @@ import { ProductsService, CartItem } from '../services/products.service';
     IonTitle,
     IonContent,
     IonList,
-    IonItem,
-    IonLabel,
+
     IonButton,
     IonIcon,
     IonBadge,

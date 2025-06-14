@@ -1,17 +1,38 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Settings
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-list>
+    <ion-item>
+      <ion-toggle checked="true">Enable Notifications</ion-toggle>
+    </ion-item>
+    
+    <ion-item>
+      <ion-toggle checked="true">Dark Mode</ion-toggle>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Location Accuracy</ion-label>
+      <ion-select value="high">
+        <ion-select-option value="high">High</ion-select-option>
+        <ion-select-option value="balanced">Balanced</ion-select-option>
+        <ion-select-option value="low">Low Power</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>About</ion-label>
+      <ion-button fill="clear" slot="end" routerLink="/about">View</ion-button>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>Version</ion-label>
+      <ion-note slot="end">1.0.0</ion-note>
+    </ion-item>
+  </ion-list>
 </ion-content>

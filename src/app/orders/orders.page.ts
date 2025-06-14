@@ -48,8 +48,7 @@ import { OrdersService, Order } from '../services/orders.service';
     IonButton,
     IonIcon,
     IonBadge,
-    IonList,
-    IonItem,
+
     IonLabel,
     IonRefresher,
     IonRefresherContent,

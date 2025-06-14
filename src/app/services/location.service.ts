@@ -40,14 +40,16 @@ export class LocationService {
 
   startWatchingLocation(callback: (location: LocationData) => void): void {
     this.watchId = this.geolocation.watchPosition().subscribe(
-      (position) => {
-        this.currentLocation = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-          timestamp: position.timestamp
-        };
-        callback(this.currentLocation);
+      (position: any) => {
+        if (position && position.coords) {
+          this.currentLocation = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+            timestamp: position.timestamp
+          };
+          callback(this.currentLocation);
+        }
       },
       (error) => console.error('Error watching location', error)
     );
